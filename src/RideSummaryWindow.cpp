@@ -849,6 +849,8 @@ RideSummaryWindow::htmlSummary()
                         summary += "<td align=\"center\" valign=\"bottom\">" + m->name();
                         if (m->units(useMetricUnits) == "seconds" || m->units(useMetricUnits) == tr("seconds"))
                             ; // don't do anything
+                        else if (m->units(useMetricUnits) == "km" || m->units(useMetricUnits) == tr("km"))
+                            summary += " (meters)";
                         else if (m->units(useMetricUnits).size() > 0)
                             summary += " (" + m->units(useMetricUnits) + ")";
                         summary += "</td>";
@@ -874,6 +876,8 @@ RideSummaryWindow::htmlSummary()
                         double pace  = m->value(useMetricUnits);
                         summary += s.arg(QTime(0,0,0,0).addSecs(pace*60).toString("mm:ss"));
 
+                    } else if (m->units(useMetricUnits) == "km" || m->units(useMetricUnits) == tr("km")) {
+                        summary += s.arg(m->value(useMetricUnits) * 1000.0, 0, 'f', 2);
                     } else {
                         summary += s.arg(m->value(useMetricUnits), 0, 'f', m->precision());
                     }

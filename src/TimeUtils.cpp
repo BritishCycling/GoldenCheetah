@@ -27,18 +27,30 @@ QString time_to_string(double secs)
 {
     QString result;
     unsigned rounded = static_cast<unsigned>(round(secs));
+    unsigned seconds = static_cast<unsigned>(secs);
+    unsigned millis = static_cast<unsigned>(1000.0*secs - 1000.0*seconds);
     bool needs_colon = false;
-    if (rounded >= 3600) {
-        result += QString("%1").arg(rounded / 3600);
-        rounded %= 3600;
+    if (seconds >= 3600) {
+        result += QString("%1").arg(seconds / 3600);
+        seconds %= 3600;
         needs_colon = true;
     }
-    if (needs_colon)
+    if (needs_colon) {
         result += ":";
-    result += QString("%1").arg(rounded / 60, 2, 10, QLatin1Char('0'));
-    rounded %= 60;
-    result += ":";
-    result += QString("%1").arg(rounded, 2, 10, QLatin1Char('0'));
+        needs_colon = false;
+    }
+    if (seconds >= 60) {
+        result += QString("%1").arg(seconds / 60, 2, 10, QLatin1Char('0'));
+        seconds %= 60;
+        needs_colon = true;
+    }
+    if (needs_colon) {
+        result += ":";
+        needs_colon = false;
+    }
+    result += QString("%1").arg(seconds, 2, 10, QLatin1Char('0'));
+    result += ".";
+    result += QString("%1").arg(millis, 3, 10, QLatin1Char('0'));
     return result;
 }
 

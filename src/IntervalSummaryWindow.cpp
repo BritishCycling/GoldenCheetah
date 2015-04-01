@@ -164,6 +164,9 @@ void IntervalSummaryWindow::calcInterval(IntervalItem* interval, QString& html)
             html += s.arg(time_to_string(m->value(metricUnits)));
         else if (m->internalName() == "Pace") {
             html += s.arg(QTime(0,0,0,0).addSecs(m->value(metricUnits)*60).toString("mm:ss"));
+        } else if (m->units(metricUnits) == "km" ||
+                   m->units(metricUnits) == tr("km")) {
+            html += s.arg(m->value(metricUnits) * 1000.0, 0, 'f', 2);
         } else
             html += s.arg(m->value(metricUnits), 0, 'f', m->precision());
 
@@ -171,6 +174,9 @@ void IntervalSummaryWindow::calcInterval(IntervalItem* interval, QString& html)
         if (m->units(metricUnits) == "seconds" ||
             m->units(metricUnits) == tr("seconds"))
             ; // don't do anything
+        else if (m->units(metricUnits) == "km" ||
+                 m->units(metricUnits) == tr("km"))
+            html += "meters";
         else if (m->units(metricUnits).size() > 0)
             html += m->units(metricUnits);
         html += "</td>";
@@ -236,6 +242,9 @@ void IntervalSummaryWindow::calcInterval(RideFileInterval interval, QString& htm
             html += s.arg(time_to_string(m->value(metricUnits)));
         else if (m->internalName() == "Pace") {
             html += s.arg(QTime(0,0,0,0).addSecs(m->value(metricUnits)*60).toString("mm:ss"));
+        } else if (m->units(metricUnits) == "km" ||
+                   m->units(metricUnits) == tr("km")) {
+            html += s.arg(m->value(metricUnits) * 1000.0, 0, 'f', 2);
         } else
             html += s.arg(m->value(metricUnits), 0, 'f', m->precision());
 
@@ -243,6 +252,9 @@ void IntervalSummaryWindow::calcInterval(RideFileInterval interval, QString& htm
         if (m->units(metricUnits) == "seconds" ||
             m->units(metricUnits) == tr("seconds"))
             ; // don't do anything
+        else if (m->units(metricUnits) == "km" ||
+                 m->units(metricUnits) == tr("km"))
+            html += "meters";
         else if (m->units(metricUnits).size() > 0)
             html += m->units(metricUnits);
         html += "</td>";
